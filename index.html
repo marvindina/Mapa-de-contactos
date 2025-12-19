@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mapa de Contactos - Conecta360</title>
+    <title>Formulario 1 — Primer Filtro - Conecta360</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -13,7 +13,6 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         input, select { min-width: 140px; }
-        /* Container for the logo with specific brand background */
         .brand-logo-canvas {
             background-color: #1B1718;
             padding: 2rem;
@@ -33,7 +32,6 @@
         
         <div id="intro-card" class="bg-white rounded-t-2xl shadow-xl overflow-hidden mb-8 max-w-4xl mx-auto">
             <div class="p-8 border-b border-slate-100">
-                <!-- Logo with specified dark canvas background -->
                 <div class="flex justify-center mb-8">
                     <div class="brand-logo-canvas">
                         <img src="https://360conecta.com/assets/logo.png" alt="Conecta360 Logo" class="h-12 md:h-14 object-contain">
@@ -41,7 +39,7 @@
                 </div>
 
                 <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight mb-4 text-center">
-                    Mapa de Contactos Nivel A
+                    📄 FORMULARIO 1 — PRIMER FILTRO
                 </h1>
                 <div class="mt-6 p-5 bg-amber-50 border border-amber-100 rounded-lg text-slate-700 text-base md:text-lg leading-relaxed">
                     <p class="font-medium text-slate-900 mb-2">
@@ -55,6 +53,7 @@
                         <p class="font-semibold mb-1">Instrucciones:</p>
                         <ul class="list-disc pl-5 space-y-1">
                             <li>Debes registrar <strong>al menos 10 contactos</strong> para continuar.</li>
+                            <li>El formulario permite hasta un máximo de 15 contactos.</li>
                         </ul>
                     </div>
                 </div>
@@ -66,17 +65,29 @@
             <input type="hidden" id="utm_medium" name="utm_medium">
             <input type="hidden" id="utm_campaign" name="utm_campaign">
 
-            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm max-w-4xl mx-auto">
-                <label class="block text-lg font-medium text-slate-800 mb-2">
-                    Tu Correo Electrónico (Candidato)<span class="text-red-500">*</span>
-                </label>
-                <input type="email" id="email" name="email" required placeholder="tu@correo.com" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#FFB300] outline-none transition-all">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white p-6 md:p-8 rounded-xl border border-slate-200 shadow-sm">
+                    <label class="block text-lg font-bold text-slate-800 mb-3">
+                        1. Correo electrónico (Candidato)<span class="text-red-500">*</span>
+                    </label>
+                    <input type="email" id="email" name="email" required placeholder="tu@correo.com" class="w-full px-4 py-4 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#FFB300] outline-none transition-all text-lg mb-4">
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+                        <div class="flex gap-3">
+                            <svg class="w-6 h-6 text-red-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <p class="text-sm md:text-base font-bold text-red-800">
+                                IMPORTANTE: Debe ser el mismo correo con el que te registraste la primera vez. Si usas otro, tu avance NO se registrará.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="space-y-6">
                 <div class="flex items-center justify-between max-w-4xl mx-auto">
                     <h3 class="text-xl font-bold text-slate-800">Lista de Contactos</h3>
-                    <span class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full border border-slate-200">10 Requeridos</span>
+                    <span id="contact-counter" class="text-sm bg-slate-100 text-slate-600 px-3 py-1 rounded-full border border-slate-200">10 de 15 Requeridos</span>
                 </div>
                 
                 <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
@@ -120,14 +131,14 @@
                 <div class="flex justify-center pt-2">
                     <button type="button" id="add-contact-btn" class="text-[#FFB300] hover:text-orange-600 font-semibold flex items-center gap-2 py-2 px-6 rounded-lg hover:bg-amber-50 transition-all border border-transparent hover:border-amber-200">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                        Agregar otro contacto (Opcional)
+                        Agregar otro contacto (Máx. 15)
                     </button>
                 </div>
             </div>
 
             <div class="pt-4 pb-12 flex justify-center">
                 <button type="submit" id="submit-btn" class="bg-[#FFB300] hover:bg-amber-500 text-slate-900 font-bold py-4 px-12 rounded-xl shadow-lg transition-all flex items-center gap-3 transform hover:-translate-y-0.5">
-                    <span id="btn-text">Enviar Mapa de Contactos</span>
+                    <span id="btn-text">Enviar Formulario</span>
                     <div id="btn-spinner" class="hidden w-5 h-5 border-2 border-slate-800 border-t-transparent rounded-full animate-spin"></div>
                 </button>
             </div>
@@ -137,7 +148,7 @@
             <div class="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg class="w-10 h-10 text-[#FFB300]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
             </div>
-            <h2 class="text-3xl font-bold text-slate-900 mb-4">¡Mapa Recibido!</h2>
+            <h2 class="text-3xl font-bold text-slate-900 mb-4">¡Formulario Recibido!</h2>
             <p class="text-slate-600 text-lg leading-relaxed">En un máximo de 24 horas se le notificará sobre su avance.</p>
         </div>
     </main>

@@ -8,12 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitBtn = document.getElementById('submit-btn');
     const btnSpinner = document.getElementById('btn-spinner');
     const btnText = document.getElementById('btn-text');
+    const contactCounter = document.getElementById('contact-counter');
 
-    let contactCount = 10; // Empezamos en 10 porque ya están estáticos en el HTML
+    let contactCount = 10; 
+    const MAX_CONTACTS = 15;
 
     const relations = ["Familiar", "Amigo cercano", "Compañero actual", "Excompañero", "Cliente anterior", "Conocido social", "Entrenador/Maestro", "Profesional", "Otro"];
     const trusts = ["1 (Baja)", "2", "3", "4", "5 (Alta)"];
     const optionsYesNo = ["Sí", "Probablemente sí", "No estoy seguro", "No"];
+
+    const updateCounter = () => {
+        if (contactCounter) {
+            contactCounter.textContent = `${contactCount} de ${MAX_CONTACTS} Requeridos`;
+        }
+    };
 
     // Función para crear una fila nueva dinámicamente
     const createRow = (index) => {
@@ -30,11 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return tr;
     };
 
-    // Lógica para agregar más contactos opcionales
+    // Lógica para agregar más contactos opcionales (Max 15)
     addContactBtn.addEventListener('click', () => {
-        contactsTableBody.appendChild(createRow(contactCount));
-        contactCount++;
-        if (contactCount >= 50) addContactBtn.style.display = 'none';
+        if (contactCount < MAX_CONTACTS) {
+            contactsTableBody.appendChild(createRow(contactCount));
+            contactCount++;
+            updateCounter();
+        }
+        if (contactCount >= MAX_CONTACTS) {
+            addContactBtn.style.display = 'none';
+        }
     });
 
     // Manejo del envío al Webhook
@@ -42,43 +55,53 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         
         const formData = new FormData(form);
+        
+        // Objeto principal plano (Flat JSON structure)
         const payload = {
-            email: formData.get('email'),
-            total_contactos: 0,
-            contactos: []
+            email_candidato: formData.get('email'),
+            utm_source: formData.get('utm_source') || '',
+            utm_medium: formData.get('utm_medium') || '',
+            utm_campaign: formData.get('utm_campaign') || '',
+            total_contactos_enviados: 0
         };
 
-        // Recolectar datos de todas las filas completadas
+        let validContacts = 0;
+
+        // Recolectar datos de todas las filas y aplanarlos
         for (let i = 0; i < contactCount; i++) {
             const name = formData.get(`contacts[${i}][name]`);
-            // Solo incluimos el contacto si tiene el nombre completo
+            const relation = formData.get(`contacts[${i}][relation]`);
+            const occupation = formData.get(`contacts[${i}][occupation]`);
+            const trust = formData.get(`contacts[${i}][trust]`);
+            const availability = formData.get(`contacts[${i}][availability]`);
+
+            // Si tiene nombre, lo consideramos un contacto para el payload
             if (name && name.trim() !== "") {
-                payload.contactos.push({
-                    contacto_numero: i + 1,
-                    nombre: name,
-                    relacion: formData.get(`contacts[${i}][relation]`),
-                    ocupacion: formData.get(`contacts[${i}][occupation]`),
-                    confianza: formData.get(`contacts[${i}][trust]`),
-                    disponibilidad_llamada_msj: formData.get(`contacts[${i}][availability]`)
-                });
+                const num = validContacts + 1;
+                payload[`contacto_nombre_${num}`] = name;
+                payload[`contacto_relacion_${num}`] = relation || '';
+                payload[`contacto_ocupacion_${num}`] = occupation || '';
+                payload[`contacto_confianza_${num}`] = trust || '';
+                payload[`contacto_disponibilidad_${num}`] = availability || '';
+                validContacts++;
             }
         }
 
-        payload.total_contactos = payload.contactos.length;
+        payload.total_contactos_enviados = validContacts;
 
         // Validar mínimo de 10 contactos
-        if (payload.total_contactos < 10) {
+        if (validContacts < 10) {
             alert("Por favor completa la información de al menos 10 contactos para poder continuar.");
             return;
         }
 
         // Estado visual de carga
         submitBtn.disabled = true;
-        btnText.textContent = "Enviando Mapa...";
+        btnText.textContent = "Enviando...";
         btnSpinner.classList.remove('hidden');
 
         try {
-            // Envío de datos al webhook de Zapier
+            // Envío de datos al webhook de Zapier (Flat JSON)
             const response = await fetch(WEBHOOK_URL, {
                 method: 'POST',
                 body: JSON.stringify(payload),
@@ -95,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error("Error al enviar al webhook:", error);
-            // Intentar con una técnica más simple si falla por CORS (Zapier a veces lo requiere)
+            // Intento sin CORS como respaldo para Zapier
             try {
                 await fetch(WEBHOOK_URL, {
                     method: 'POST',
@@ -110,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (err) {
                 alert("Hubo un error de conexión al enviar el formulario. Por favor revisa tu conexión e intenta de nuevo.");
                 submitBtn.disabled = false;
-                btnText.textContent = "Enviar Mapa de Contactos";
+                btnText.textContent = "Enviar Formulario";
                 btnSpinner.classList.add('hidden');
             }
         }
