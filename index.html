@@ -89,11 +89,11 @@
                                     <th class="p-4 text-xs font-bold text-slate-500 uppercase min-w-[180px]">Relación</th>
                                     <th class="p-4 text-xs font-bold text-slate-500 uppercase min-w-[180px]">Ocupación</th>
                                     <th class="p-4 text-xs font-bold text-slate-500 uppercase min-w-[120px]">Confianza</th>
-                                    <th class="p-4 text-xs font-bold text-slate-500 uppercase min-w-[220px]">¿Llamada o Mensaje?</th>
+                                    <th class="p-4 text-xs font-bold text-slate-500 uppercase min-w-[300px]">¿Te tomaría una llamada o respondería msj?</th>
                                 </tr>
                             </thead>
                             <tbody id="contacts-table-body" class="divide-y divide-slate-100">
-                                <!-- Filas 1 a 10 estáticas para asegurar visibilidad inmediata -->
+                                <!-- Filas 1 a 10 estáticas -->
                                 <script>
                                     const relations = ["Familiar", "Amigo cercano", "Compañero actual", "Excompañero", "Cliente anterior", "Conocido social", "Entrenador/Maestro", "Profesional", "Otro"];
                                     const trusts = ["1 (Baja)", "2", "3", "4", "5 (Alta)"];
@@ -103,11 +103,11 @@
                                         document.write(`
                                             <tr class="hover:bg-slate-50 transition-colors">
                                                 <td class="p-3 text-center text-slate-400 font-medium">${i+1}</td>
-                                                <td class="p-2"><input type="text" name="contacts[${i}][name]" required placeholder="Nombre*" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"></td>
+                                                <td class="p-2"><input type="text" name="contacts[${i}][name]" required placeholder="Nombre completo*" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"></td>
                                                 <td class="p-2"><select name="contacts[${i}][relation]" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"><option value="" disabled selected>Relación*</option>${relations.map(r => `<option value="${r}">${r}</option>`).join('')}</select></td>
                                                 <td class="p-2"><input type="text" name="contacts[${i}][occupation]" required placeholder="Ocupación*" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"></td>
                                                 <td class="p-2"><select name="contacts[${i}][trust]" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"><option value="" disabled selected>-</option>${trusts.map(t => `<option value="${t}">${t}</option>`).join('')}</select></td>
-                                                <td class="p-2"><select name="contacts[${i}][availability]" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"><option value="" disabled selected>¿Te tomaría una llamada o respondería msj?*</option>${optionsYesNo.map(o => `<option value="${o}">${o}</option>`).join('')}</select></td>
+                                                <td class="p-2"><select name="contacts[${i}][availability]" required class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"><option value="" disabled selected>Seleccione una opción*</option>${optionsYesNo.map(o => `<option value="${o}">${o}</option>`).join('')}</select></td>
                                             </tr>
                                         `);
                                     }
