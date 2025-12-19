@@ -19,13 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tr.className = "hover:bg-slate-50 transition-colors animate-fade-in";
         tr.innerHTML = `
             <td class="p-3 text-center text-slate-400 font-medium">${index + 1}</td>
-            <td class="p-2"><input type="text" name="contacts[${index}][name]" placeholder="Nombre" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"></td>
-            <td class="p-2"><select name="contacts[${index}][relation]" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"><option value="" disabled selected>Relación</option>${relations.map(r => `<option value="${r}">${r}</option>`).join('')}</select></td>
-            <td class="p-2"><input type="text" name="contacts[${index}][occupation]" placeholder="Ocupación" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"></td>
-            <td class="p-2"><select name="contacts[${index}][trust]" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"><option value="" disabled selected>-</option>${trusts.map(t => `<option value="${t}">${t}</option>`).join('')}</select></td>
-            <td class="p-2"><select name="contacts[${index}][message]" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"><option value="" disabled selected>-</option>${optionsYesNo.map(o => `<option value="${o}">${o}</option>`).join('')}</select></td>
-            <td class="p-2"><select name="contacts[${index}][call]" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"><option value="" disabled selected>-</option>${optionsYesNo.map(o => `<option value="${o}">${o}</option>`).join('')}</select></td>
-            <td class="p-2"><input type="text" name="contacts[${index}][why]" placeholder="Razón" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"></td>
+            <td class="p-2"><input type="text" name="contacts[${index}][name]" placeholder="Nombre" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"></td>
+            <td class="p-2"><select name="contacts[${index}][relation]" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"><option value="" disabled selected>Relación</option>${relations.map(r => `<option value="${r}">${r}</option>`).join('')}</select></td>
+            <td class="p-2"><input type="text" name="contacts[${index}][occupation]" placeholder="Ocupación" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"></td>
+            <td class="p-2"><select name="contacts[${index}][trust]" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"><option value="" disabled selected>-</option>${trusts.map(t => `<option value="${t}">${t}</option>`).join('')}</select></td>
+            <td class="p-2"><select name="contacts[${index}][availability]" class="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-1 focus:ring-[#FFB300] outline-none"><option value="" disabled selected>¿Toma llamada o responde msj?</option>${optionsYesNo.map(o => `<option value="${o}">${o}</option>`).join('')}</select></td>
         `;
         return tr;
     };
@@ -56,9 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     relacion: formData.get(`contacts[${i}][relation]`),
                     ocupacion: formData.get(`contacts[${i}][occupation]`),
                     confianza: formData.get(`contacts[${i}][trust]`),
-                    contesta_msj: formData.get(`contacts[${i}][message]`),
-                    toma_llamada: formData.get(`contacts[${i}][call]`),
-                    razon: formData.get(`contacts[${i}][why]`)
+                    disponibilidad_llamada_msj: formData.get(`contacts[${i}][availability]`)
                 });
             }
         }
@@ -92,4 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSpinner.classList.add('hidden');
         }
     });
+
+    // Set current year in footer
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 });
